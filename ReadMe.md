@@ -30,6 +30,27 @@ val job = QuantumClock.sync()
 | `Calendar.getInstance()`     | `QuantumClock.nowCalendar`       |
 | `Date()`                     | `QuantumClock.nowDate`           |
 
+### 自定义你的时间源
+
+```kotlin
+object YourSyncher : Syncher {
+
+    override val name: String get() = "YourSyncher"
+    
+    //优先级  值越大优先级越高
+    override val priority: Int = 1
+
+    //返回时间戳 unit: ms
+    override suspend fun getMillisTime(): Long {
+        //request .... 耗时操作
+        return ...
+    }
+}
+```
+
+之后添加 `QuantumClock.addSyncher(YourSyncher)`.
+
+
 ### 引入
 
 ```groovy

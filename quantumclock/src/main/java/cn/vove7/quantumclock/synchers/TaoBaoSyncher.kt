@@ -11,6 +11,8 @@ import org.json.JSONObject
  * @author Vove
  */
 object TaoBaoSyncher : Syncher {
+    override val priority: Int = 1
+
     override val name: String get() = "淘宝"
 
     override suspend fun getMillisTime(): Long {

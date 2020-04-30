@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import cn.vove7.quantumclock.QuantumClock
+import cn.vove7.quantumclock.Syncher
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -16,6 +17,20 @@ class MainActivity : AppCompatActivity() {
         startTimeLoop()
         log("当前时间： ${System.currentTimeMillis()}")
 
+        //优先级测试
+        QuantumClock.addSyncer(object : Syncher {
+            override val name: String get() = "Local"
+
+            override val priority: Int = 9
+            var i = 0
+
+            override suspend fun getMillisTime(): Long {
+                if (i++ > 3) {
+                    throw Exception("use taobao")
+                }
+                return 0
+            }
+        })
     }
 
     fun log(m: String) {

@@ -5,12 +5,16 @@ import cn.vove7.quantumclock.synchers.TaoBaoSyncher
 import kotlinx.coroutines.*
 import java.util.*
 
-interface Syncher {
+interface Syncher : Comparable<Syncher> {
     val name: String
+
+    //优先级
+    val priority: Int
 
     //不进行异常处理，仅返回成功结果
     //网络时间 忽略误差，有需求可自定义来处理误差
     suspend fun getMillisTime(): Long
+    override fun compareTo(other: Syncher): Int = other.priority - this.priority
 }
 
 object QuantumClock {
@@ -29,7 +33,9 @@ object QuantumClock {
 
     private var syncedTime: Long = System.currentTimeMillis()
 
-    private val synchers = mutableListOf<Syncher>(TaoBaoSyncher)
+    private val synchers = TreeSet<Syncher>().also {
+        it.add(TaoBaoSyncher)
+    }
 
     fun addSyncer(syncer: Syncher) = synchers.add(syncer)
     fun removeSyncer(syncer: Syncher) = synchers.remove(syncer)
@@ -49,6 +55,7 @@ object QuantumClock {
                 syncedTime = time
                 return
             }.onFailure { e ->
+                e.printStackTrace()
                 errs.add(e)
             }
         }
