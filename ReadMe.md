@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/Vove7/QuantumClock.svg)](https://jitpack.io/#Vove7/QuantumClock)
+
 # QuantumClock
 
 > 你是否为 App 内获取时间 `System.currentTimeMillis()` “不准确“所困扰？ `QuantumClock` 既是为方便 Developer 同步App内时间。
@@ -67,7 +69,8 @@ allprojects {
 
 //Add the dependency
 dependencies {
-	implementation 'com.github.Vove7:QuantumClock:0.1.0'
+	implementation 'com.github.Vove7:QuantumClock:$lastest'
 }
 ```
 
+the lastest version is: [![](https://jitpack.io/v/Vove7/QuantumClock.svg)](https://jitpack.io/#Vove7/QuantumClock)
