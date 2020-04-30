@@ -24,13 +24,15 @@ val job = QuantumClock.sync()
 
 ### 方法代替
 
-| 原方法                       | 代替方法                         |
+| 原方法                        | 代替方法                          |
 | ---------------------------- | -------------------------------- |
 | `System.currentTimeMillis()` | `QuantumClock.currentTimeMillis` |
 | `Calendar.getInstance()`     | `QuantumClock.nowCalendar`       |
 | `Date()`                     | `QuantumClock.nowDate`           |
 
 ### 自定义你的时间源
+
+1. 继承`Syncher` 实现`suspend fun getMillisTime(): Long`
 
 ```kotlin
 object YourSyncher : Syncher {
@@ -48,14 +50,24 @@ object YourSyncher : Syncher {
 }
 ```
 
-之后添加 `QuantumClock.addSyncher(YourSyncher)`.
+2. `QuantumClock.addSyncher(YourSyncher)`.
 
 
 ### 引入
 
 ```groovy
 
+//Add it in your root build.gradle at the end of repositories:
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+	}
+}
 
-
+//Add the dependency
+dependencies {
+	implementation 'com.github.Vove7:QuantumClock:0.1.0'
+}
 ```
 
