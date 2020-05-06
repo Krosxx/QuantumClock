@@ -19,7 +19,7 @@ interface Syncher : Comparable<Syncher> {
 
 object QuantumClock {
 
-    val currentTimeMillis: Long get() = syncedTime + SystemClock.uptimeMillis() - lastSyncUpTime
+    val currentTimeMillis: Long get() = syncedTime + SystemClock.elapsedRealtime() - lastSyncUpTime
 
     val nowDate: Date get() = Date(currentTimeMillis)
 
@@ -29,7 +29,7 @@ object QuantumClock {
         }
 
 
-    private var lastSyncUpTime = SystemClock.uptimeMillis()
+    private var lastSyncUpTime = SystemClock.elapsedRealtime()
 
     private var syncedTime: Long = System.currentTimeMillis()
 
@@ -51,7 +51,7 @@ object QuantumClock {
             kotlin.runCatching {
                 syncher.getMillisTime()
             }.onSuccess { time ->
-                lastSyncUpTime = SystemClock.uptimeMillis()
+                lastSyncUpTime = SystemClock.elapsedRealtime()
                 syncedTime = time
                 return
             }.onFailure { e ->

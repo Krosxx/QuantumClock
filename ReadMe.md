@@ -7,12 +7,12 @@
 ## 原理
 
 ```kotlin
-   currentTimeMillis = syncedTime + SystemClock.uptimeMillis() - lastSyncUpTime
+   currentTimeMillis = syncedTime + SystemClock.elapsedRealtime() - lastSyncUpTime
 ```
 
 - syncedTime: 上次同步的时间
-- SystemClock.uptimeMillis() : 系统自开机以来运行的时间
-- lastSyncUpTime： 上次同步时的 SystemClock.uptimeMillis()
+- SystemClock.elapsedRealtime() : 系统自开机以来运行的时间
+- lastSyncUpTime： 上次同步时的 SystemClock.elapsedRealtime()
 
 ## 使用
 
