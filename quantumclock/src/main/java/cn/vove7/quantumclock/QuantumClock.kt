@@ -4,6 +4,7 @@ import android.os.SystemClock
 import cn.vove7.quantumclock.synchers.TaoBaoSyncher
 import kotlinx.coroutines.*
 import java.util.*
+import kotlin.reflect.KClass
 
 interface Syncher : Comparable<Syncher> {
     val name: String
@@ -33,6 +34,12 @@ object QuantumClock {
 
     private var syncedTime: Long = System.currentTimeMillis()
 
+    var syncSuccessed = false
+        private set
+
+    var syncWithClass: KClass<out Syncher>? = null
+        private set
+
     private val synchers = TreeSet<Syncher>().also {
         it.add(TaoBaoSyncher)
     }
@@ -53,6 +60,8 @@ object QuantumClock {
             }.onSuccess { time ->
                 lastSyncUpTime = SystemClock.elapsedRealtime()
                 syncedTime = time
+                syncSuccessed = true
+                syncWithClass = syncher::class
                 return
             }.onFailure { e ->
                 e.printStackTrace()

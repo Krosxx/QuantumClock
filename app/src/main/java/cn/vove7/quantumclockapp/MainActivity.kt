@@ -5,36 +5,25 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import cn.vove7.quantumclock.QuantumClock
 import cn.vove7.quantumclock.Syncher
-import kotlinx.android.synthetic.main.activity_main.*
+import cn.vove7.quantumclockapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 
 class MainActivity : AppCompatActivity() {
 
+    private val binding by lazy(LazyThreadSafetyMode.NONE) {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         startTimeLoop()
         log("当前时间： ${System.currentTimeMillis()}")
-
-        //优先级测试
-        QuantumClock.addSyncer(object : Syncher {
-            override val name: String get() = "Local"
-
-            override val priority: Int = 9
-            var i = 0
-
-            override suspend fun getMillisTime(): Long {
-                if (i++ > 3) {
-                    throw Exception("use taobao")
-                }
-                return 0
-            }
-        })
     }
 
     fun log(m: String) {
-        log_text_view.append(m + "\n")
+        binding.logTextView.append(m + "\n")
     }
 
     private var loopJob: Job? = null
@@ -45,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             while (this.isActive) {
                 runOnUiThread {
                     val diff = System.currentTimeMillis() - QuantumClock.currentTimeMillis
-                    clock_view.text = sf.format(QuantumClock.nowDate) + "\ndiff with system: $diff"
+                    binding.clockView.text = sf.format(QuantumClock.nowDate) + "\ndiff with system: $diff"
                 }
                 delay(500)
             }
