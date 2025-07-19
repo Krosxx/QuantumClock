@@ -1,7 +1,7 @@
 package cn.vove7.quantumclock
 
 import android.os.SystemClock
-import cn.vove7.quantumclock.synchers.TaoBaoSyncher
+import cn.vove7.quantumclock.synchers.TimeApiSyncher
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.reflect.KClass
@@ -41,7 +41,7 @@ object QuantumClock {
         private set
 
     private val synchers = TreeSet<Syncher>().also {
-        it.add(TaoBaoSyncher)
+        it.add(TimeApiSyncher)
     }
 
     fun addSyncer(syncer: Syncher) = synchers.add(syncer)
